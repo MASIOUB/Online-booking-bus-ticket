@@ -9,4 +9,6 @@ connectDB()
 
 const app = express();
 
+app.use('/api/users', require('./routes/userRoutes'))
+
 app.listen(port, () => console.log(`This app listening on port ${port}`));
