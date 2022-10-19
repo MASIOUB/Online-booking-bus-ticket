@@ -1,9 +1,15 @@
+const { request } = require('express');
 const User = require('../models/userModel');
 
 // @desc Register new user
 // @route Post /api/users
 // @access Public
 const registerUser = (req, res) => {
+    if (!req.body.name){
+        res.status(400)
+        throw new Error('Please fill all fields')
+    }
+
     res.status(200).json({message: 'register user function'});
 }
 
