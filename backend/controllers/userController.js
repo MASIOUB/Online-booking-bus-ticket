@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
 const asyncHandler = require('express-async-handler');
@@ -41,6 +42,7 @@ const registerUser = asyncHandler(async (req, res) => {
             full_name: user.full_name,
             email: user.email,
             phone: user.phone,
+            token: generateToken(user._id),
         })
     } else {
         res.status(400)
@@ -63,6 +65,7 @@ const loginUser = asyncHandler(async (req, res) => {
             full_name: user.full_name,
             email: user.email,
             phone: user.phone,
+            token: generateToken(user._id),
         })
     } else {
         res.status(400)
@@ -76,6 +79,13 @@ const loginUser = asyncHandler(async (req, res) => {
 const getMe = asyncHandler(async (req, res) => {
     res.status(200).json({message: 'get user data function'});
 })
+
+// Generate JWT
+const generateToken = (id) => {
+    return jwt.sign({ id }, process.env.JWT_SECRET, {
+        expiresIn: '1d',
+    })
+}
 
 module.exports = {
     registerUser,
