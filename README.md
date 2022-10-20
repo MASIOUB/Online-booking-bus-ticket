@@ -19,5 +19,5 @@ npm i
 npm run server
 ```
 
-Browse to http://localhost:8000/.
+Browse to http://localhost:5000/.
 
