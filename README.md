@@ -8,13 +8,13 @@ https://mermaid.ink/img/pako:eNqNU8tugzAQ_BVrT32ECEiatKjHXnvqrUKKXLwhVsFGtlGbpvn
 # Running this application
 
 Clone the repository:
-```console
+```bash
 git clone https://github.com/MASIOUB/Online-booking-bus-ticket.git
 ```
 
 # Running the browser
 
-```console
+```bash
 cd Online-booking-bus-ticket
 npm i
 npm run server
