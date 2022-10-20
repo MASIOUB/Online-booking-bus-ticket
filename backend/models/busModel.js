@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const busSchema = mongoose.Schema(
     {
         seats: {
-            type: Integer,
+            type: Number,
             required: [true, 'Please add number of seats in this bus'],
         },
     },
