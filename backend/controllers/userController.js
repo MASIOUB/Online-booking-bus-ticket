@@ -7,7 +7,7 @@ const User = require('../models/userModel');
 
 // @desc Register new user
 // @route Post /api/users
-// @access Public
+// @access Private
 const registerUser = asyncHandler(async (req, res) => {
     const { full_name, email, password, phone } = req.body;
 
@@ -52,7 +52,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
 // @desc Authenticate a user
 // @route Post /api/users/login
-// @access Public
+// @access Private
 const loginUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body
 
@@ -60,6 +60,7 @@ const loginUser = asyncHandler(async (req, res) => {
     const user = await User.findOne({ email })
 
     if (user && (await bcrypt.compare(password, user.password))) {
+        
         res.json({
             _id: user.id,
             full_name: user.full_name,
@@ -80,6 +81,15 @@ const getMe = asyncHandler(async (req, res) => {
     res.status(200).json(req.user)
 })
 
+// @desc Get users
+// @route GET /api/users
+// @access Private
+const getUsers = asyncHandler(async (req, res) => {
+    const users = await User.find()
+
+    res.status(200).json(users);
+})
+
 // Generate JWT
 const generateToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -91,4 +101,5 @@ module.exports = {
     registerUser,
     loginUser,
     getMe,
+    getUsers,
 }
