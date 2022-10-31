@@ -15,10 +15,9 @@ const getBookings = asyncHandler(async (req, res) => {
 // @route POST /api/bookings
 // @access Private
 const setBooking = asyncHandler(async (req, res) => {
-    if (!req.body.user || !req.body.trip || !req.body.seat) {
-        res.status(404)
-        throw new Error('Please fill all fields')
-    }
+   (!req.body.user || !req.body.trip || !req.body.seat) 
+   ? res.status(404) &&  Error('Please fill all fields')
+   :null;   
 
     const booking = await Booking.create({
         user: req.body.user,
@@ -35,10 +34,7 @@ const setBooking = asyncHandler(async (req, res) => {
 const updateBooking = asyncHandler(async (req, res) => {
     const booking = await Booking.findById(req.params.id)
 
-    if (!booking) {
-        res.status(404)
-        throw new Error('Booking not found')
-    }
+    !booking ? res.status(404) && Error('Booking not found') : null;
 
     const updatedBooking = await Booking.findByIdAndUpdate(req.params.id, req.body, { new: true, })
 
