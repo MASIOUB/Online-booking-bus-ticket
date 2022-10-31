@@ -1,6 +1,39 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function Login() {
+
+  const navigate = useNavigate()
+  const [user, setUser] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleChange = e => {
+    const { name, value } = e.target
+    setUser({
+      ...user,
+      [name]: value
+    })
+  };
+
+  const handleSubmit = async(e) => {
+    e.preventDefault();
+    const { email, password } = user
+    if (email && password) {
+      const res=await axios.post("http://localhost:8000/api/users/login",user)
+      if(res.data.user.role==="customer"){
+        navigate('/')
+      }else{
+        navigate('/dashbord')
+      }
+    }
+    else {
+      alert("invalid input")
+    };
+  }
+
   return (
     <section className="h-screen">
       <div className="container px-6 py-12 h-full">
@@ -13,13 +46,17 @@ function Login() {
             />
           </div>
           <div className="md:w-8/12 lg:w-5/12 lg:ml-20">
-            <form>
+            <form onSubmit={handleSubmit}>
+
               {/* Email input */}
               <div className="mb-6">
                 <input
                   type="text"
                   className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                   placeholder="Email address"
+                  name='email'
+                  value={user.email}
+                  onChange={handleChange}
                 />
               </div>
 
@@ -29,6 +66,9 @@ function Login() {
                   type="password"
                   className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                   placeholder="Password"
+                  name='password'
+                  value={user.password}
+                  onChange={handleChange}
                 />
               </div>
 

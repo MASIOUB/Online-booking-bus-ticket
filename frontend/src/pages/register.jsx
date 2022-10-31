@@ -133,7 +133,6 @@ function Register() {
                   name='full_name'
                   value={user.full_name}
                   onChange={handleChange}
-                  id="fullName"
                 />
               </div>
 
@@ -146,7 +145,6 @@ function Register() {
                   name='phone'
                   value={user.phone}
                   onChange={handleChange}
-                  id="phone"
                 />
               </div>
 
@@ -159,7 +157,6 @@ function Register() {
                   name='email'
                   value={user.email}
                   onChange={handleChange}
-                  id="email"
                 />
               </div>
 
@@ -172,7 +169,6 @@ function Register() {
                   name='password'
                   value={user.password}
                   onChange={handleChange}
-                  id="password"
                 />
               </div>
 
