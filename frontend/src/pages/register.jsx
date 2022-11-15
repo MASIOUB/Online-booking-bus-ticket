@@ -1,34 +1,54 @@
-import React, { useState } from 'react'
-// import axios from "axios";
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 
 function Register() {
-  // const [fullName , setFullName] = useState('');
-  // const [phone, setPhone] = useState('');
-  // const [email, setEmail] = useState('');
-  // const [password, setPassword] = useState('');
 
-  const [user, setUser] = useState({
-    full_name: "",
-    phone: "",
-    email: "",
-    password: "",
-  });
+  const navigate = useNavigate()
 
-  const handleChange = e => {
-    const { name, value } = e.target
-    setUser({
-      ...user,
-      [name]: value
-    })
-  };
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleInputChange = (e) => {
+    const { id, value } = e.target;
+    if (id === "fullName") {
+      setFullName(value)
+    }
+    if (id === "email") {
+      // console.log(value);
+      setEmail(value);
+    }
+    if (id === "password") {
+      // console.log(value);
+      setPassword(value);
+    }
+
+  }
+
+  // const [user, setUser] = useState({
+  //   full_name: "",
+  //   phone: "",
+  //   email: "",
+  //   password: "",
+  // });
+
+  // const handleChange = e => {
+  //   const { name, value } = e.target
+  //   setUser({
+  //     ...user,
+  //     [name]: value
+  //   })
+  // };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const { full_name, phone, email, password } = user
-    if (full_name && phone && email && password) {
-      //  fullName.current.focus()
-      // console.log(fullName, phone, email, password);
-      // alert('A form was submitted: ' + fullName);
+    // const { full_name, phone, email, password } = user
+    const user = {
+      full_name: fullName,
+      email: email,
+      password: password
+    }
+    if (fullName && email && password) {
 
       fetch("http://localhost:8000/api/users/register", {
         'method': "POST",
@@ -39,77 +59,15 @@ function Register() {
         // We convert the React state to JSON and send it as the POST body
         body: JSON.stringify(user)
       }).then((response) => {
-        //console.log(response)
-        // alert('A form was submitted: ' + fullName);
         return response.json();
       });
+      navigate('/')
       console.log(user)
     }
     else {
       alert("invalid input")
     };
   }
-
-  // const register = ()=>{
-  //   const {full_name, phone, email, password} = user
-  //   if (full_name && phone && email && password){
-  //    axios.post("http://localhost:8000/api/users/register",user )
-  //    .then(res=>console.log(res))
-  //   }
-  //   else{
-  //       alert("invalid input")
-  //   };
-  // }
-
-  // const handleInputChange = (e) => {
-  //   const { id, value } = e.target;
-  //   if (id === "fullName") {
-  //     setFullName(value)
-  //   }
-  //   if (id === "phone") {
-  //     // console.log(value);
-  //     setPhone(value);
-  //   }
-  //   if (id === "email") {
-  //     // console.log(value);
-  //     setEmail(value);
-  //   }
-  //   if (id === "password") {
-  //     // console.log(value);
-  //     setPassword(value);
-  //   }
-
-  // }
-
-  // const handleSubmit = () => {
-  //   // fullName.current.focus()
-  //   // console.log(fullName, phone, email, password);
-  //  // alert('A form was submitted: ' + fullName);
-
-  //     fetch("http://localhost:8000/api/users/register",{
-
-  //       headers: {
-  //         'method':"post",
-  //         'mode':"cors",
-  //         'Accept': 'application/json',
-  //         'Content-Type': 'application/json'
-  //       },
-  //       // We convert the React state to JSON and send it as the POST body
-  //       body: JSON.stringify(
-  //         {"users" :{
-  //           full_name:fullName,
-  //           phone:phone,
-  //           email:email,
-  //           password:password
-  //         }})
-  //     }).then((response) => {
-  //       //console.log(response)
-  //       alert('A form was submitted: ' + fullName);
-  //       return response.json();
-  //     });
-
-
-  // }
 
   return (
     <section className="h-screen">
@@ -127,48 +85,39 @@ function Register() {
               {/* Full name input */}
               <div className="mb-6">
                 <input
+                  id='fullName'
                   type="text"
                   className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                   placeholder="Full name"
                   name='full_name'
-                  value={user.full_name}
-                  onChange={handleChange}
-                />
-              </div>
-
-              {/* Phone input */}
-              <div className="mb-6">
-                <input
-                  type="text"
-                  className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                  placeholder="Phone number"
-                  name='phone'
-                  value={user.phone}
-                  onChange={handleChange}
+                  value={fullName}
+                  onChange={handleInputChange}
                 />
               </div>
 
               {/* Email input */}
               <div className="mb-6">
                 <input
-                  type="text"
+                  id='email'
+                  type="email"
                   className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                   placeholder="Email address"
                   name='email'
-                  value={user.email}
-                  onChange={handleChange}
+                  value={email}
+                  onChange={handleInputChange}
                 />
               </div>
 
               {/* Password input  */}
               <div className="mb-6">
                 <input
+                  id='password'
                   type="password"
                   className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                   placeholder="Password"
                   name='password'
-                  value={user.password}
-                  onChange={handleChange}
+                  value={password}
+                  onChange={handleInputChange}
                 />
               </div>
 

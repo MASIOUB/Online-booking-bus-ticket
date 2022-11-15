@@ -11,6 +11,22 @@ const getTrips = asyncHandler(async (req, res) => {
     res.status(200).json(trips);
 })
 
+// @desc Get trips after a search
+// @route GET /api/trips
+// @access Private
+const getAvailableTrip = asyncHandler(async (req, res) => {
+    const { from, to, date } = req.query;
+    
+    const trips= await Trip.find({ from, to, date })
+    
+    if(trips.length > 0){
+            res.status(200).json(trips);
+    }else{
+        res.status(400)
+        throw new Error('not trips found')
+    }
+})
+
 // @desc Set trip
 // @route POST /api/trips
 // @access Private
@@ -52,4 +68,5 @@ module.exports = {
     getTrips,
     setTrip,
     updateTrip,
+    getAvailableTrip,
 }

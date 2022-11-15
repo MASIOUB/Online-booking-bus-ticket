@@ -11,7 +11,7 @@ const tripSchema = mongoose.Schema(
             required: [true, 'Please add the return station']
         },
         date: {
-            type: Date,
+            type: String,
             required: [true, 'Please add the date'],
         },
         time: {

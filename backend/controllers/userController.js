@@ -9,44 +9,47 @@ const User = require('../models/userModel');
 // @route Post /api/users
 // @access Private
 const registerUser = asyncHandler(async (req, res) => {
-    const { full_name, email, password, phone } = req.body;
 
-    if (!full_name || !email || !password || !phone) {
-        res.status(400)
-        throw new Error('Please add all fields')
-    }
+    if (Object.keys(req.body).length > 0) {
+        const { full_name, email, password } = req.body;
 
-    // Check if user exists
-    const userExists = await User.findOne({ email })
 
-    if (userExists) {
-        res.status(400)
-        throw new Error('User already exists')
-    }
+        if (!full_name || !email || !password) {
+            res.status(400)
+            throw new Error('Please add all fields')
+        }
 
-    // Hash password
-    const salt = await bcrypt.genSalt(10)
-    const hashedPassword = await bcrypt.hash(password, salt)
+        // Check if user exists
+        const userExists = await User.findOne({ email })
 
-    // Create user
-    const user = await User.create({
-        full_name,
-        email,
-        password: hashedPassword,
-        phone,
-    })
+        if (userExists) {
+            res.status(400)
+            throw new Error('User already exists')
+        }
 
-    if (user) {
-        res.status(201).json({
-            _id: user.id,
-            full_name: user.full_name,
-            email: user.email,
-            phone: user.phone,
-            token: generateToken(user._id),
+        // Hash password
+        const salt = await bcrypt.genSalt(10)
+        const hashedPassword = await bcrypt.hash(password, salt)
+
+        // Create user
+        const user = await User.create({
+            full_name,
+            email,
+            password: hashedPassword,
         })
-    } else {
-        res.status(400)
-        throw new Error('Invalid user data')
+
+        if (user) {
+            res.status(201).json({
+                _id: user.id,
+                full_name: user.full_name,
+                email: user.email,
+                token: generateToken(user._id),
+            })
+        } else {
+            res.status(400)
+            throw new Error('Invalid user data')
+        }
+
     }
 })
 
@@ -56,7 +59,7 @@ const registerUser = asyncHandler(async (req, res) => {
 const loginUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body
 
-    if(!email || !password) {
+    if (!email || !password) {
         res.status(400)
         throw new Error('Please add all fields');
     }
